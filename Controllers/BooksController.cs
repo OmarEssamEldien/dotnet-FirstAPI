@@ -44,6 +44,18 @@ namespace FirstAPI.Controllers
         {
             return Ok(await _context.Books.ToListAsync());
         }
+        [HttpGet("random")]
+        public async Task<ActionResult<Book>> GetRandomBook()
+        {
+            var books = await _context.Books.ToListAsync();
+            if (books.Count == 0)
+                return NotFound("No books found in the database");
+
+            var random = new Random();
+            var randomBook = books[random.Next(books.Count)];
+
+            return Ok(randomBook);
+        }
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBookById(int id)
         {
